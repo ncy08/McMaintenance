@@ -219,7 +219,7 @@ export function VoiceRecorderInterface() {
 
   return (
     (<div
-      className="flex flex-col h-[calc(80vh)] max-h-[800px] bg-gray-900 rounded-xl overflow-hidden border border-gray-700">
+      className="flex flex-col h-[calc(100vh)] max-h-[800px] bg-gray-900 rounded-xl overflow-hidden border border-gray-700">
       {/* Header with recording status */}
       <div className="p-6 text-center border-b border-gray-700">
         <h1 className="text-2xl font-bold text-white mb-2">Voice Recorder</h1>
@@ -234,7 +234,7 @@ export function VoiceRecorderInterface() {
       </div>
       {/* Camera View */}
       {isCameraOn && (
-        <div className="flex-1 relative bg-black">
+        <div className="flex-1 relative bg-black min-h-0">
           <CameraView stream={videoStreamRef.current} />
         </div>
       )}
