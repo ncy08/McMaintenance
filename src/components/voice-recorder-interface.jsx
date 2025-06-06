@@ -1,9 +1,14 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, use } from "react"
 import { VoiceControls } from "@/components/voice-controls"
 import { CameraView } from "@/components/camera-view"
 import { AudioVisualizer } from "@/components/audio-visualizer"
+import Vapi from '@vapi-ai/web';
+
+const vapi = new Vapi('fa71df3f-e9f7-438e-865d-c7939788dab5');
+
+
 
 export function VoiceRecorderInterface() {
   const [isRecording, setIsRecording] = useState(false)
@@ -23,61 +28,93 @@ export function VoiceRecorderInterface() {
   // Clean up on unmount
   useEffect(() => {
     return () => {
-      if (audioStreamRef.current) {
-        audioStreamRef.current.getTracks().forEach((track) => track.stop())
-      }
+      // if (audioStreamRef.current) {
+      //   audioStreamRef.current.getTracks().forEach((track) => track.stop())
+      // }
       if (videoStreamRef.current) {
         videoStreamRef.current.getTracks().forEach((track) => track.stop())
       }
-      if (timerRef.current) {
-        clearInterval(timerRef.current)
-      }
-      if (audioContextRef.current) {
-        audioContextRef.current.close()
-      }
+
+      // if (audioContextRef.current) {
+      //   audioContextRef.current.close()
+      // }
     };
   }, [])
 
+  useEffect(() => {
+
+    vapi.on('speech-start', () => {
+      console.log('Speech has started');
+    });
+
+    vapi.on('speech-end', () => {
+      console.log('Speech has ended');
+    });
+
+    vapi.on('call-start', () => {
+      console.log('Call has started');
+    });
+
+    vapi.on('call-end', () => {
+      console.log('Call has stopped');
+    });
+
+    vapi.on('volume-level', (volume) => {
+      console.log(`Assistant volume level: ${volume}`);
+    });
+
+    // Function calls and transcripts will be sent via messages
+    vapi.on('message', (message) => {
+      console.log(message);
+    });
+
+    vapi.on('error', (e) => {
+      console.error(e);
+    });
+  }, []);
+
   const startRecording = async () => {
+    vapi.start("1e1c733a-b188-49be-b8f0-90f789ea7469");
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-      audioStreamRef.current = stream
+      // const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      // audioStreamRef.current = stream
 
-      // Set up audio context and analyser for visualization
-      const audioContext = new (window.AudioContext || (window).webkitAudioContext)()
-      audioContextRef.current = audioContext
-      const analyser = audioContext.createAnalyser()
-      analyserRef.current = analyser
-      analyser.fftSize = 256
+      // // Set up audio context and analyser for visualization
+      // const audioContext = new (window.AudioContext || (window).webkitAudioContext)()
+      // audioContextRef.current = audioContext
+      // const analyser = audioContext.createAnalyser()
+      // analyserRef.current = analyser
+      // analyser.fftSize = 256
 
-      const source = audioContext.createMediaStreamSource(stream)
-      source.connect(analyser)
+      // const source = audioContext.createMediaStreamSource(stream)
+      // source.connect(analyser)
 
-      const dataArray = new Uint8Array(analyser.frequencyBinCount)
+      // const dataArray = new Uint8Array(analyser.frequencyBinCount)
 
       // Update visualization data at regular intervals
-      const updateVisualization = () => {
-        if (analyserRef.current && isRecording && !isPaused) {
-          analyserRef.current.getByteFrequencyData(dataArray)
-          setAnalyserData(new Uint8Array(dataArray))
-        }
-      }
+      // const updateVisualization = () => {
+      //   if (analyserRef.current && isRecording && !isPaused) {
+      //     analyserRef.current.getByteFrequencyData(dataArray)
+      //     setAnalyserData(new Uint8Array(dataArray))
+      //   }
+      // }
 
-      const visualizationInterval = setInterval(updateVisualization, 100)
+      // const visualizationInterval = setInterval(updateVisualization, 100)
 
-      // Set up media recorder
-      const mediaRecorder = new MediaRecorder(stream)
-      mediaRecorderRef.current = mediaRecorder
+      // // Set up media recorder
+      // const mediaRecorder = new MediaRecorder(stream)
+      // mediaRecorderRef.current = mediaRecorder
 
-      mediaRecorder.onstop = () => {
-        clearInterval(visualizationInterval)
-        if (audioStreamRef.current) {
-          audioStreamRef.current.getTracks().forEach((track) => track.stop())
-        }
-      }
+      // mediaRecorder.onstop = () => {
+      //   clearInterval(visualizationInterval)
+      //   vapi.stop();
+      //   // if (audioStreamRef.current) {
+      //   //   audioStreamRef.current.getTracks().forEach((track) => track.stop())
+      //   // }
+      // }
 
-      // Start recording
-      mediaRecorder.start()
+      // // Start recording
+      // mediaRecorder.start()
       setIsRecording(true)
       setIsPaused(false)
 
@@ -110,9 +147,10 @@ export function VoiceRecorderInterface() {
   }
 
   const stopRecording = () => {
-    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== "inactive") {
-      mediaRecorderRef.current.stop()
-    }
+    vapi.stop();
+    // if (mediaRecorderRef.current && mediaRecorderRef.current.state !== "inactive") {
+    //   mediaRecorderRef.current.stop()
+    // }
 
     if (timerRef.current) {
       clearInterval(timerRef.current)
@@ -122,7 +160,7 @@ export function VoiceRecorderInterface() {
     setIsPaused(false)
     setRecordingTime(0)
     setAnalyserData(null)
-    pausedTimeRef.current = 0
+    // pausedTimeRef.current = 0
   }
 
   const toggleCamera = async () => {
@@ -168,7 +206,7 @@ export function VoiceRecorderInterface() {
             <div
               className={`w-3 h-3 rounded-full ${isPaused ? "bg-yellow-500" : "bg-red-500 animate-pulse"}`} />
             <span className="text-white font-mono text-lg">{formatTime(recordingTime)}</span>
-            <span className="text-gray-400 text-sm">{isPaused ? "PAUSED" : "RECORDING"}</span>
+            <span className="text-gray-400 text-sm">{isPaused ? "PAUSED" : "ACTIVE"}</span>
           </div>
         )}
       </div>
