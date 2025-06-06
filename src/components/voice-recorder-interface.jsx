@@ -10,6 +10,8 @@ import { cn } from "@/lib/utils"
 import { describeImage } from '@/lib/actions';
 import { useMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
+import { useMobile } from "@/hooks/use-mobile"
+import { cn } from "@/lib/utils"
 
 const vapi = new Vapi('fa71df3f-e9f7-438e-865d-c7939788dab5');
 
@@ -17,6 +19,7 @@ const vapi = new Vapi('fa71df3f-e9f7-438e-865d-c7939788dab5');
 
 
 export function VoiceRecorderInterface() {
+  const isMobile = useMobile()
   const [isRecording, setIsRecording] = useState(false)
   const [isPaused, setIsPaused] = useState(false)
   const [isCameraOn, setIsCameraOn] = useState(false)
