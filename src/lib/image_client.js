@@ -4,7 +4,7 @@ const DEFAULT_PROMPT =
   'You are given an image of someone in the process of fixing a McFlurry machine. Describe the image to full detail; it is likely going to be a part, something broken, an error message, a tool, or some other thing involved in the process of fixing it. Be as descriptive as possible.';
 
 class ImageClient {
-  describeImage(base64Image, prompt) {
+  describeImage(base64ImageUrl, prompt) {
     throw new Error('Method not implemented');
   }
 }
@@ -18,7 +18,7 @@ class OpenAIImageClient extends ImageClient {
     });
   }
 
-  async describeImage(base64Image, prompt) {
+  async describeImage(base64ImageUrl, prompt) {
     const response = await this.openai.chat.completions.create({
       model: 'gpt-4o',
       messages: [
@@ -29,7 +29,7 @@ class OpenAIImageClient extends ImageClient {
             {
               type: 'image_url',
               image_url: {
-                url: `data:image/jpeg;base64,${base64Image}`,
+                url: base64ImageUrl,
               },
             },
           ],
