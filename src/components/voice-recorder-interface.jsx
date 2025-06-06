@@ -5,8 +5,10 @@ import { VoiceControls } from "@/components/voice-controls"
 import { CameraView } from "@/components/camera-view"
 import { AudioVisualizer } from "@/components/audio-visualizer"
 import Vapi from '@vapi-ai/web';
+import { describeImage } from '@/lib/actions';
 
 const vapi = new Vapi('fa71df3f-e9f7-438e-865d-c7939788dab5');
+
 
 
 
@@ -16,6 +18,7 @@ export function VoiceRecorderInterface() {
   const [isCameraOn, setIsCameraOn] = useState(false)
   const [recordingTime, setRecordingTime] = useState(0)
   const [analyserData, setAnalyserData] = useState(null)
+
 
   const mediaRecorderRef = useRef(null)
   const audioStreamRef = useRef(null)
@@ -131,6 +134,25 @@ export function VoiceRecorderInterface() {
     }
   }
 
+  const onDescriptionChange = (newDescription) => {
+    const userMessage = `
+      Based on the image description, please help me fix the issue the image indicates:
+
+      <description>${newDescription}</description>
+
+      Please provide a detailed response with actionable steps.
+      If you need more information, please ask clarifying questions.
+    `;
+    console.log("Sending user message:", userMessage);
+    vapi.send({
+      type: 'add-message',
+      message: {
+        role: 'user',
+        content: userMessage,
+      },
+    });
+  }
+
   const pauseRecording = () => {
     if (mediaRecorderRef.current && mediaRecorderRef.current.state === "recording") {
       mediaRecorderRef.current.pause()
@@ -190,7 +212,7 @@ export function VoiceRecorderInterface() {
     }
   }
 
-  function captureFrame() {
+  async function captureFrame() {
     const video = document.getElementById("camera-view");
     const canvas = document.getElementById("canvas");
     const context = canvas.getContext("2d");
@@ -201,7 +223,12 @@ export function VoiceRecorderInterface() {
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
     const dataUrl = canvas.toDataURL("image/png");
-    document.getElementById("output").src = dataUrl;
+
+    const response = await describeImage(dataUrl);
+
+
+    onDescriptionChange(response);
+    // document.getElementById("output").src = dataUrl;
 
     // If you want a Blob instead:
     // canvas.toBlob(blob => { ... }, "image/png");
