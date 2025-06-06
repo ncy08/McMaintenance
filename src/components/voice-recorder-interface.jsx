@@ -142,6 +142,7 @@ export function VoiceRecorderInterface() {
 
       Please provide a detailed response with actionable steps.
       If you need more information, please ask clarifying questions.
+      once you read the description, please let the user know you've seen the image
     `;
     console.log("Sending user message:", userMessage);
     vapi.send({
