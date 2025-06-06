@@ -198,8 +198,8 @@ export function VoiceRecorderInterface() {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
           video: {
-            facingMode: "environment",
-            // facingMode: { exact: "environment" },
+            // facingMode: "environment",
+            facingMode: { exact: "environment" },
             width: { ideal: 1280 },
             height: { ideal: 720 },
           },
