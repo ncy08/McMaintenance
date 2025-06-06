@@ -258,7 +258,7 @@ export function VoiceRecorderInterface() {
       </div>
       {/* Camera View */}
       {isCameraOn && (
-        <div className="flex-1 relative bg-black">
+        <div className="flex-1 relative bg-black min-h-0">
           <CameraView stream={videoStreamRef.current} />
         </div>
       )}
