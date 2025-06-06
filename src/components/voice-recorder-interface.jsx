@@ -5,8 +5,10 @@ import { VoiceControls } from "@/components/voice-controls"
 import { CameraView } from "@/components/camera-view"
 import { AudioVisualizer } from "@/components/audio-visualizer"
 import Vapi from '@vapi-ai/web';
+import { describeImage } from '@/lib/actions';
 
 const vapi = new Vapi('fa71df3f-e9f7-438e-865d-c7939788dab5');
+
 
 
 
@@ -190,7 +192,7 @@ export function VoiceRecorderInterface() {
     }
   }
 
-  function captureFrame() {
+  async function captureFrame() {
     const video = document.getElementById("camera-view");
     const canvas = document.getElementById("canvas");
     const context = canvas.getContext("2d");
@@ -201,7 +203,9 @@ export function VoiceRecorderInterface() {
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
     const dataUrl = canvas.toDataURL("image/png");
-    document.getElementById("output").src = dataUrl;
+
+    const response = await describeImage(dataUrl);
+    // document.getElementById("output").src = dataUrl;
 
     // If you want a Blob instead:
     // canvas.toBlob(blob => { ... }, "image/png");
