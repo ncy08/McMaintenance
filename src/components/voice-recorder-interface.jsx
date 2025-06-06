@@ -8,6 +8,8 @@ import Vapi from '@vapi-ai/web';
 import { useMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 import { describeImage } from '@/lib/actions';
+import { useMobile } from "@/hooks/use-mobile"
+import { cn } from "@/lib/utils"
 
 const vapi = new Vapi('fa71df3f-e9f7-438e-865d-c7939788dab5');
 
