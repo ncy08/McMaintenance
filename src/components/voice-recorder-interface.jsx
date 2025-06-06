@@ -298,8 +298,6 @@ export function VoiceRecorderInterface() {
 
       </div>
       <canvas id="canvas" className="hidden"></canvas>
-      <img id="output" className="" alt="Captured frame" />
-
     </div>)
   );
 }
