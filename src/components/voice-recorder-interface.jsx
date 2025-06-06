@@ -5,7 +5,14 @@ import { VoiceControls } from "@/components/voice-controls"
 import { CameraView } from "@/components/camera-view"
 import { AudioVisualizer } from "@/components/audio-visualizer"
 import Vapi from '@vapi-ai/web';
+import { useMobile } from "@/hooks/use-mobile"
+import { cn } from "@/lib/utils"
 import { describeImage } from '@/lib/actions';
+import { useMobile } from "@/hooks/use-mobile"
+import { cn } from "@/lib/utils"
+import { useMobile } from "@/hooks/use-mobile"
+import { cn } from "@/lib/utils"
+
 
 const vapi = new Vapi('fa71df3f-e9f7-438e-865d-c7939788dab5');
 
@@ -13,6 +20,7 @@ const vapi = new Vapi('fa71df3f-e9f7-438e-865d-c7939788dab5');
 
 
 export function VoiceRecorderInterface() {
+  const isMobile = useMobile()
   const [isRecording, setIsRecording] = useState(false)
   const [isPaused, setIsPaused] = useState(false)
   const [isCameraOn, setIsCameraOn] = useState(false)
@@ -243,7 +251,7 @@ export function VoiceRecorderInterface() {
 
   return (
     (<div
-      className="flex flex-col h-[calc(100vh-2rem)] max-h-[800px] bg-gray-900 rounded-xl overflow-hidden border border-gray-700">
+      className="flex flex-col h-[calc(100vh)] max-h-[800px] bg-gray-900 rounded-xl overflow-hidden border border-gray-700">
       {/* Header with recording status */}
       <div className="p-6 text-center border-b border-gray-700">
         <h1 className="text-2xl font-bold text-white mb-2">Voice Recorder</h1>
