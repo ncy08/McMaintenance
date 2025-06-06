@@ -1,5 +1,6 @@
 "use client";
-import { Mic, Square, Pause, Play, Video, VideoOff } from "lucide-react"
+import { Mic, Square, Pause, Play, Video, VideoOff, SwitchCamera } from "lucide-react"
+
 import { cn } from "@/lib/utils"
 
 export function VoiceControls({
@@ -10,7 +11,8 @@ export function VoiceControls({
   onPauseRecording,
   onResumeRecording,
   onStopRecording,
-  onToggleCamera
+  onToggleCamera,
+  onCaptureFrame
 }) {
   return (
     (<div className="flex items-center justify-center space-x-6">
@@ -48,6 +50,15 @@ export function VoiceControls({
               className="p-4 rounded-full bg-gray-600 hover:bg-gray-700 text-white transition-all duration-200">
               <Square className="h-6 w-6" />
             </button>
+
+            {/* Capture Frame Button */}
+            {isCameraOn && (
+              <button
+                onClick={onCaptureFrame}
+                className="p-4 rounded-full bg-gray-600 hover:bg-gray-700 text-white transition-all duration-200">
+                <SwitchCamera />
+              </button>
+            )}
           </>
         )}
       </div>

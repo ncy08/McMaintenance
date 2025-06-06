@@ -177,6 +177,7 @@ export function VoiceRecorderInterface() {
         const stream = await navigator.mediaDevices.getUserMedia({
           video: {
             facingMode: "user",
+            // facingMode: { exact: "environment" },
             width: { ideal: 1280 },
             height: { ideal: 720 },
           },
@@ -188,6 +189,24 @@ export function VoiceRecorderInterface() {
       }
     }
   }
+
+  function captureFrame() {
+    const video = document.getElementById("camera-view");
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    const dataUrl = canvas.toDataURL("image/png");
+    document.getElementById("output").src = dataUrl;
+
+    // If you want a Blob instead:
+    // canvas.toBlob(blob => { ... }, "image/png");
+  }
+
 
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60)
@@ -247,8 +266,13 @@ export function VoiceRecorderInterface() {
           onPauseRecording={pauseRecording}
           onResumeRecording={resumeRecording}
           onStopRecording={stopRecording}
+          onCaptureFrame={captureFrame}
           onToggleCamera={toggleCamera} />
+
       </div>
+      <canvas id="canvas" className="hidden"></canvas>
+      <img id="output" className="" alt="Captured frame" />
+
     </div>)
   );
 }
