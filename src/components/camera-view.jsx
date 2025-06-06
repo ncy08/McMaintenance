@@ -33,6 +33,7 @@ export function CameraView({
         autoPlay
         playsInline
         muted
+        id="camera-view"
         className="w-full h-full object-cover rounded-lg" />
       {/* Camera overlay indicators */}
       <div className="absolute top-4 left-4 flex items-center space-x-2">
