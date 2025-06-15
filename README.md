@@ -1,12 +1,12 @@
 # 🍦 FROST AI - Field Repair Operator for Service Technicians
 
-![FROST AI Logo](assets/frost-ai-logo.png)
+![FROST AI Logo](/FROSTai-wordmark.png)
 
 _McDonald’s ice cream machine broken again? Meet FROST AI!_
 
 FROST AI is a voice and vision assistant that guides service technicians to quickly diagnose and fix equipment issues. Technicians no longer need complicated manuals or slow chatbots. With FROST AI, they receive instant voice instructions and visual diagnostics directly in the field.
 
-![FROST AI Mascot](assets/frost-ai-mascot.png)
+![FROST AI Mascot](/FROSTai-avatar.png)
 
 ## 🔧 How FROST AI Helps Technicians
 
