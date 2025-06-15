@@ -29,7 +29,7 @@ Powered by AssemblyAI, OpenAI, and Vapi.
 
 ## 👥 Team Members
 
-* Daniel Green
+* [Daniel Green](https://www.linkedin.com/in/danielpgreen)
 * Ricky Meizoso
 * Nick Yebra
 * Chris McKenzie
